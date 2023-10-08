@@ -31,9 +31,25 @@ namespace API.Data
 
 		public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
 		{
-			var query = context.Users.ProjectTo<MemberDto>(mapper.ConfigurationProvider).AsNoTracking();
+			var query = context.Users.AsQueryable();
+			query = query.Where(user => user.UserName != userParams.CurrentUsername);
+			query = query.Where(user => user.Gender == userParams.Gender);
 			
-			return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+			var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge - 1));
+
+			var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
+			
+			query = query.Where(user => user.DateOfBirth >= minDob && user.DateOfBirth <= maxDob);
+			
+			query = userParams.OrderBy switch
+			{
+				"created" => query.OrderByDescending(u => u.Created),
+				_ => query.OrderByDescending(u => u.LastActive)
+			};
+			
+			var iQuery = query.AsNoTracking().ProjectTo<MemberDto>(mapper.ConfigurationProvider);
+			
+			return await PagedList<MemberDto>.CreateAsync(iQuery, userParams.PageNumber, userParams.PageSize);
 		}
 
 		public async Task<AppUser> GetUserByIdAsync(int id)

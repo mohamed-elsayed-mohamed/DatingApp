@@ -46,9 +46,10 @@ namespace API.Controllers
 			await context.SaveChangesAsync();
 			
 			return new UserDto{
-				Username=user.UserName,
-				Token=tokenService.CreateToken(user),
-				KnownAs=user.KnownAs
+				Username = user.UserName,
+				Token = tokenService.CreateToken(user),
+				KnownAs = user.KnownAs,
+				Gender = user.Gender
 			};
 		}
 
@@ -72,7 +73,8 @@ namespace API.Controllers
 				Username = user.UserName,
 				Token = tokenService.CreateToken(user),
 				PhotoUrl = user.Photos.FirstOrDefault(photo => photo.IsMain)?.Url,
-				KnownAs=user.KnownAs
+				KnownAs = user.KnownAs,
+				Gender = user.Gender
 			};
 		}
 
