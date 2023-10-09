@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Security.Claims;
 using API.Data;
 using API.DTOs;
@@ -25,7 +26,7 @@ public class UsersController: BaseApiController{
 		this.userRepository = userRepository;
 		this.mapper = mapper;
 	}
-
+	
 	[HttpGet]
 	public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery]UserParams userParams){
 		var currentUser = await userRepository.GetUserByUsernameAsync(User
@@ -48,7 +49,7 @@ public class UsersController: BaseApiController{
 	public async Task<ActionResult<MemberDto>> GetUser(int id){
 		return Ok(mapper.Map<MemberDto>(await userRepository.GetUserByIdAsync(id)));
 	}
-	
+
 	[HttpGet("{username}")]
 	public async Task<ActionResult<MemberDto>> GetUser(string username){
 		return Ok(await userRepository.GetMemberAsync(username));

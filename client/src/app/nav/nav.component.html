@@ -18,6 +18,11 @@
             >Messages</a
           >
         </li>
+        <li *appHasRole="['Admin', 'Moderator']" class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active"
+            >Admin</a
+          >
+        </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/errors" routerLinkActive="active"
             >Errors</a
@@ -29,7 +34,7 @@
     <div class="dropdown" *ngIf="currentUser$ | async as user" dropdown>
       <img
         src="{{ user.photoUrl || './assets/user.png' }}"
-        alt="{{ user.username }}"
+        alt="{{ user.userName }}"
       />
       <a
         class="dropdown-toggle text-light text-decoration-none ms-2"
