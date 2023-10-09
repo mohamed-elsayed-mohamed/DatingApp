@@ -1,3 +1,4 @@
+import { PresenceService } from './../../services/presence.service';
 import { MembersService } from 'src/app/services/members.service';
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Member } from 'src/app/models/member';
@@ -14,7 +15,8 @@ export class MemberCardComponent {
 
   constructor(
     private membersService: MembersService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    public presenceService: PresenceService
   ) {}
 
   addLike(member: Member) {

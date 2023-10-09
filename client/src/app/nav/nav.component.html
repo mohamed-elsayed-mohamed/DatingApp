@@ -34,7 +34,7 @@
     <div class="dropdown" *ngIf="currentUser$ | async as user" dropdown>
       <img
         src="{{ user.photoUrl || './assets/user.png' }}"
-        alt="{{ user.userName }}"
+        alt="{{ user.username }}"
       />
       <a
         class="dropdown-toggle text-light text-decoration-none ms-2"
