@@ -25,6 +25,15 @@ IdentityUserToken<int>>
 		
 	}
 
+	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+	{
+		configurationBuilder.Properties<DateOnly>()
+			.HaveConversion<DateOnlyConverter>()
+			.HaveColumnType("date");
+				
+		base.ConfigureConventions(configurationBuilder);
+	}
+
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
 		base.OnModelCreating(builder);
@@ -44,7 +53,7 @@ IdentityUserToken<int>>
 		builder.Entity<UserLike>().HasKey(k => new { k.SourceUserId, k.TargetUserId});
 		
 		builder.Entity<UserLike>().HasOne(s => s.SourceUser).WithMany(l => l.LikedUsers).HasForeignKey(s => s
-		.SourceUserId).OnDelete(DeleteBehavior.Cascade);
+		.SourceUserId).OnDelete(DeleteBehavior.NoAction);
 		
 		builder.Entity<UserLike>().HasOne(s => s.TargetUser).WithMany(l => l.LikedByUsers).HasForeignKey(s => s
 		.TargetUserId).OnDelete(DeleteBehavior.Cascade);
